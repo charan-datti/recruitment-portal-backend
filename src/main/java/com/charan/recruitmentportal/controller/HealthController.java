@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
 
     @GetMapping("/health")
-    public String healthCheck() {
-        return "Recruitment Portal Backend is running 🚀";
+    public String health() {
+        return "OK";
     }
 }
