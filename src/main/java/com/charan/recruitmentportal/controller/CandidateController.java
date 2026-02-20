@@ -4,6 +4,8 @@ import com.charan.recruitmentportal.entity.Candidate;
 import com.charan.recruitmentportal.repository.CandidateRepository;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import jakarta.validation.Valid;
+
 
 
 @RestController
@@ -17,9 +19,10 @@ public class CandidateController {
     }
 
     @PostMapping
-    public Candidate create(@RequestBody Candidate candidate) {
+    public Candidate createCandidate(@Valid @RequestBody Candidate candidate) {
         return candidateRepository.save(candidate);
     }
+
 
     @GetMapping
     public List<Candidate> getAllCandidates() {
