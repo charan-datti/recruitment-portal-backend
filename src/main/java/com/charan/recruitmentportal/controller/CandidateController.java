@@ -26,4 +26,10 @@ public class CandidateController {
         return candidateRepository.findAll();
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteCandidate(@PathVariable Long id) {
+        candidateRepository.deleteById(id);
+    }
+
+
 }
