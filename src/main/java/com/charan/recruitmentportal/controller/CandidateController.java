@@ -31,5 +31,20 @@ public class CandidateController {
         candidateRepository.deleteById(id);
     }
 
+    @PutMapping("/{id}")
+    public Candidate updateCandidate(
+            @PathVariable Long id,
+            @RequestBody Candidate updatedCandidate) {
+
+        return candidateRepository.findById(id)
+                .map(candidate -> {
+                    candidate.setName(updatedCandidate.getName());
+                    candidate.setEmail(updatedCandidate.getEmail());
+                    return candidateRepository.save(candidate);
+                })
+                .orElseThrow(() -> new RuntimeException("Candidate not found with id " + id));
+    }
+
+
 
 }
