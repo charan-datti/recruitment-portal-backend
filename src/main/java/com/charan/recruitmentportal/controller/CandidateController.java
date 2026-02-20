@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import com.charan.recruitmentportal.exception.ResourceNotFoundException;
+
 
 
 
@@ -26,6 +28,24 @@ public class CandidateController {
         return candidateRepository.save(candidate);
     }
 
+    @PutMapping("/{id}")
+    public Candidate updateCandidate(
+            @PathVariable Long id,
+            @RequestBody @Valid Candidate updatedCandidate) {
+
+        Candidate existingCandidate = candidateRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Candidate not found with id " + id
+                ));
+
+
+        existingCandidate.setName(updatedCandidate.getName());
+        existingCandidate.setEmail(updatedCandidate.getEmail());
+
+        return candidateRepository.save(existingCandidate);
+    }
+
+
 
     @GetMapping
     public Page<Candidate> getAllCandidates(
@@ -37,20 +57,6 @@ public class CandidateController {
     @DeleteMapping("/{id}")
     public void deleteCandidate(@PathVariable Long id) {
         candidateRepository.deleteById(id);
-    }
-
-    @PutMapping("/{id}")
-    public Candidate updateCandidate(
-            @PathVariable Long id,
-            @RequestBody Candidate updatedCandidate) {
-
-        return candidateRepository.findById(id)
-                .map(candidate -> {
-                    candidate.setName(updatedCandidate.getName());
-                    candidate.setEmail(updatedCandidate.getEmail());
-                    return candidateRepository.save(candidate);
-                })
-                .orElseThrow(() -> new RuntimeException("Candidate not found with id " + id));
     }
 
 
